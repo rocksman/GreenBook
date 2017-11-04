@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .tdata{
+            position: absolute;
+            top: 100px;
+        }
+        table {
+            border-style: none;
+            border-bottom-style: block;
+            text-align: center;
+        }
+        th, td {
+            border-style:none;
+            text-align: left;
+            padding: 30px;
+        }
+        th {
+            background-color: grey;
+            color: white;
+        }
+        #display{
+            width:100%;
+            height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <button id = "display" class="btn-primary"onclick="buildHtmlTable('#excelDataTable')">Display table </button>
+    <div class="tdata" style="width:100%">
+        <table class="table table-hover" id="excelDataTable" width="600" border="1">
+        </table>
+    </div>
+</body>
+<script>
+    var myList;
+        $.ajax({
+                url: '/upload',
+                complete: function (data) {                    
+                    myList=JSON.parse(data.responseText);
+                    console.log(myList);
+                }
+            });
+
+     //table html
+        // Builds the HTML Table out of myList.
+        function buildHtmlTable(selector) {
+                var columns = addAllColumnHeaders(myList, selector);
+
+                for (var i = 0; i < myList.length; i++) {
+                    var row$ = $('<tr/>');
+                    for (var colIndex = 0; colIndex < columns.length; colIndex++) {
+                        var cellValue = myList[i][columns[colIndex]];
+                        if (cellValue == null) cellValue = "";
+                        row$.append($('<td/>').html(cellValue));
+                    }
+                    $(selector).append(row$);
+                }
+            }
+
+            // Adds a header row to the table and returns the set of columns.
+            // Need to do union of keys from all records as some records may not contain
+            // all records.
+            function addAllColumnHeaders(myList, selector) {
+                var columnSet = [];
+                var headerTr$ = $('<tr/>');
+
+                for (var i = 0; i < myList.length; i++) {
+                    var rowHash = myList[i];
+                    for (var key in rowHash) {
+                        if ($.inArray(key, columnSet) == -1) {
+                            columnSet.push(key);
+                            headerTr$.append($('<th/>').html(key));
+                        }
+                    }
+                }
+                $(selector).append(headerTr$);
+
+                return columnSet;
+            }
+</script>
+</html>

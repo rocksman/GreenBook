@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenBook</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+   
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+     <style>
+         body{
+            background-color: grey;
+        }
+     </style>
+     
+</head>
+
+<body class="container">  
+    <form id="uploadForm" action="upload" method="post" enctype="multipart/form-data">
+
+        <fieldset>
+        <legend>HTML File Upload</legend>
+
+        <div>
+            <label>Files to upload:</label>
+            <input type="file" name="file"/>
+        </div>
+
+        <div id="submitbutton">
+            <button type="submit" name="submit" value="upload">Upload Files</button>
+        </div>
+
+        </fieldset>
+
+    </form>
+
+<div id="messages">
+<p>Status Messages</p>
+</div>
+</body> 
+</html>
